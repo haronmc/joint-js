@@ -1,0 +1,4 @@
+name: joint-js
+version: '${project.version}'
+main: ru.smokingplaya.jointjs.Joint_js
+api-version: '1.16'
