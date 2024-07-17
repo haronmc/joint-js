@@ -1,4 +1,9 @@
 name: joint-js
 version: '${project.version}'
-main: ru.smokingplaya.jointjs.Joint_js
+main: ru.smokingplaya.jointjs.Main
 api-version: '1.16'
+commands:
+  jointreload:
+    description: Reloads joint scripts
+    usage: /<command>
+    permission: sperma.everywhere
