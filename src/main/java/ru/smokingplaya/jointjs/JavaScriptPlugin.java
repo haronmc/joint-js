@@ -2,58 +2,92 @@ package ru.smokingplaya.jointjs;
 
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
+import org.graalvm.polyglot.Value;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 import static org.bukkit.Bukkit.getServer;
 
-/**
- * JavaScriptPlugin
- * Как все работает:
- *  Этот класс создает отдельный контекст для каждого плагина
- *  Все.
- */
 public class JavaScriptPlugin {
-    private final static String entryPoint = "plugin.js";
-    protected static HashMap<String, JavaScriptPlugin> plugins = new HashMap<>();
-    private final File scriptBase;
-    private final File scriptEntryPoint;
-    private final Logger logger = Main.logger;
+  private final static String entryPoint = "plugin.ts";
+  protected static HashMap<String, JavaScriptPlugin> plugins = new HashMap<>();
+  private final File scriptBase;
+  private final File scriptEntryPoint;
+  private final Logger logger = Main.logger;
 
-    JavaScriptPlugin(File file) {
-        scriptEntryPoint = file.isFile() ? file : new File(file.getPath() + "\\" + entryPoint);
-        scriptBase = file;
+  JavaScriptPlugin(File folder) {
+    scriptEntryPoint = new File(folder, entryPoint);
+    scriptBase = folder;
 
-        plugins.put(scriptEntryPoint.getName(), this);
+    plugins.put(scriptEntryPoint.getPath(), this);
 
-        execute();
-        initializeWatchThread();
+    execute();
+    initializeWatchThread();
+  }
+
+	private Context generateContext() {
+    Context context = Context.newBuilder("js")
+        .allowAllAccess(true)
+        .option("js.ecmascript-version", "2022")
+        .option("js.commonjs-require", "true")
+        .option("js.commonjs-require-cwd", Executor.nodeModules.getPath())
+        .allowIO(true)
+        .build();
+
+    Value bind = context.getBindings("js");
+    bind.putMember("core", getServer());
+    bind.putMember("listenEvent", (Function<Value, Void>) event -> {
+      if (event.canExecute()) {
+        event.execute();
+      } else {
+        System.out.println("event data: " + event.toString());
+      }
+
+      return null;
+    });
+
+    return context;
+  }
+
+  private void executeTypeScript() {
+    try {
+      ArrayList<String> result = Utils.readCommand("bun build " + scriptEntryPoint.getAbsolutePath());
+
+      execute(Source.newBuilder("js", Utils.toString(result), scriptEntryPoint.toPath().toString()).build());
+    } catch (IOException err) {
+      err.printStackTrace();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void execute(Source src) {
+    generateContext().eval(src);
+  }
+
+  public void execute() {
+    if (Utils.getFileExtension(scriptEntryPoint).equals("ts")) {
+      executeTypeScript();
+      return;
     }
 
-    private Context generateContext() {
-        Context context =  Context.newBuilder("js")
-            .allowAllAccess(true)
-            .option("js.ecmascript-version", "2022")
-            .option("js.commonjs-require", "true")
-            .option("js.commonjs-require-cwd", Executor.nodeModules.getPath())
-            .allowIO(true)
-            .build();
+    try {
+      Source src = Source.newBuilder("js", scriptEntryPoint)
+          .mimeType("application/javascript+module")
+          .build();
 
-        context.getBindings("js").putMember("core", getServer());
-
-        return context;
+      execute(src);
+    } catch (IOException err) {
+      logger.severe("Unable to execute \"" + scriptBase.getPath() + "\": " + err.toString());
     }
+  }
 
-    public void execute() {
-        try {
-            generateContext().eval(Source.newBuilder("js", scriptEntryPoint).build());
-        } catch (IOException err) {
-            logger.severe("Unable to execute \"" + scriptBase.getPath() + "\": " + err.toString());
-        }
-    }
-
-    public void initializeWatchThread() {}
+  // todo @
+  public void initializeWatchThread() {
+  }
 }
