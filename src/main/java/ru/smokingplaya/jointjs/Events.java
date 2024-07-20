@@ -20,7 +20,6 @@ public class Events implements Listener {
       }, Main.plugin);
   }
 
-  // <- нахуя он тут нужен?
   public void eventListener(Event event) {
     listener.callback(event);
   }
@@ -29,9 +28,9 @@ public class Events implements Listener {
     Reflections reflections = new Reflections("org.bukkit.event");
     var classes = reflections.getSubTypesOf(Event.class);
 
-    classes.removeIf(jopa -> {
+    classes.removeIf(classObj -> {
       try {
-				jopa.getMethod("getHandlerList");
+				classObj.getMethod("getHandlerList");
 			} catch (Exception e) {
 				return true;
 			}

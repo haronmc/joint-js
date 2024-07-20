@@ -1,14 +1,15 @@
 package ru.smokingplaya.jointjs;
 
 import org.bukkit.Server;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import ru.smokingplaya.jointjs.commands.Commands;
 
 import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
-    protected static Logger logger;
     public static JavaPlugin plugin;
+    public static Logger logger;
     public static Server server;
 
     @Override
@@ -16,10 +17,12 @@ public class Main extends JavaPlugin {
         plugin = this;
         logger = getLogger();
         server = getServer();
+
         if (!Dependencies.check())
             return;
+
         Executor.initialize();
-        this.getCommand("jointreload").setExecutor(new ReloadCommand());
+        Commands.initialize(this.getCommand("joint"));
     }
 
     @Override

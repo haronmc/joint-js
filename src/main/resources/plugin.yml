@@ -3,7 +3,7 @@ version: '${project.version}'
 main: ru.smokingplaya.jointjs.Main
 api-version: '1.16'
 commands:
-  jointreload:
-    description: Reloads joint scripts
-    usage: /<command>
-    permission: sperma.everywhere
+  joint:
+    description: Controlling the plugin via commands
+    usage: /joint <command>
+    permission: jointjs.use.command

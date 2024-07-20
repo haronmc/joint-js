@@ -1,14 +1,20 @@
-package ru.smokingplaya.jointjs.functions;
+package ru.smokingplaya.jointjs;
 
 import org.graalvm.polyglot.proxy.ProxyExecutable;
 import org.graalvm.polyglot.Value;
 
-public abstract class Function {
-  private final String name;
+public abstract class Callable {
+  public final String name;
 
-  public Function(String name) {
+  public Callable(String name) {
     this.name = name;
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public void onCall() {}
 
   public void onCall(Value[] event) {}
 

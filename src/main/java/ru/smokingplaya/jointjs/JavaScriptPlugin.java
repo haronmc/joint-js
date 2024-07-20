@@ -3,9 +3,8 @@ package ru.smokingplaya.jointjs;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
-import org.graalvm.polyglot.proxy.ProxyExecutable;
 
-import ru.smokingplaya.jointjs.functions.EventListener;
+import ru.smokingplaya.jointjs.functions.Functions;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +15,8 @@ import java.util.logging.Logger;
 import static org.bukkit.Bukkit.getServer;
 
 public class JavaScriptPlugin {
+  public static HashMap<String, JavaScriptPlugin> plugins = new HashMap<>();
   private final static String entryPoint = "plugin.ts";
-  protected static HashMap<String, JavaScriptPlugin> plugins = new HashMap<>();
   private final File scriptBase;
   private final File scriptEntryPoint;
   private final Logger logger = Main.logger;
@@ -44,7 +43,7 @@ public class JavaScriptPlugin {
     Value bind = context.getBindings("js");
     bind.putMember("core", getServer());
 
-    new EventListener().register(bind);
+    Functions.Register(bind);
 
     return context;
   }

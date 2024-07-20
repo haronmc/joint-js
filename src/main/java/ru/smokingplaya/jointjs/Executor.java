@@ -6,11 +6,10 @@ import java.util.Arrays;
 @SuppressWarnings("all")
 public class Executor {
     private final static String rootPath = "joint-js";
-    private final static String scriptPath = rootPath + "\\plugins";
     private final static String[] allowedExtensions = new String[] {"js", "mjs", "cjs", "ts"};
     private final static File rootFolder = new File(rootPath);
-    private final static File scriptFolder = new File(scriptPath);
-    protected final static File nodeModules = new File(rootPath + "\\node_modules");
+    private final static File scriptFolder = new File(rootPath, "plugins");
+    protected final static File nodeModules = new File(rootPath, "node_modules");
 
     public static void initialize() {
         ensureFolderExists();

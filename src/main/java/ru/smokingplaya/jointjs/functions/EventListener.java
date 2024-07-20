@@ -2,10 +2,11 @@ package ru.smokingplaya.jointjs.functions;
 
 import org.graalvm.polyglot.Value;
 
+import ru.smokingplaya.jointjs.Callable;
 import ru.smokingplaya.jointjs.Events;
 import ru.smokingplaya.jointjs.Main;
 
-public class EventListener extends Function {
+public class EventListener extends Callable {
   public EventListener() {
     super("listenEvent");
   }

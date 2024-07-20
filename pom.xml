@@ -6,7 +6,7 @@
 
   <groupId>ru.smokingplaya</groupId>
   <artifactId>joint-js</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.3</version>
   <packaging>jar</packaging>
 
   <name>joint-js</name>
