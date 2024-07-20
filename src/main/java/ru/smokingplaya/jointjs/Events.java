@@ -1,28 +1,44 @@
 package ru.smokingplaya.jointjs;
 
+import java.util.Set;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Value;
+import org.reflections.Reflections;
 
 public class Events implements Listener {
   private EventCallback listener;
 
-  Events(EventCallback callback) {
+  public Events(EventCallback callback) {
     listener = callback;
+
+    Set<Class<? extends Event>> classes = getAllEventClasses();
+
+    for (var eventClass: classes)
+      Main.server.getPluginManager().registerEvent(eventClass, this, EventPriority.HIGH, (listener, event) -> {
+        eventListener(event);
+      }, Main.plugin);
   }
 
-  public static Value getListenFunction(Context context) {
-    return context.asValue((java.util.function.Function<Value, Object>) event -> {
-      System.out.println("hi");
-			return event;
-    });
-  }
-
-  @EventHandler
+  // <- нахуя он тут нужен?
   public void eventListener(Event event) {
-    System.out.println(">Event");
     listener.callback(event);
+  }
+
+  public static Set<Class<? extends Event>> getAllEventClasses() {
+    Reflections reflections = new Reflections("org.bukkit.event");
+    var classes = reflections.getSubTypesOf(Event.class);
+
+    classes.removeIf(jopa -> {
+      try {
+				jopa.getMethod("getHandlerList");
+			} catch (Exception e) {
+				return true;
+			}
+
+      return false;
+    });
+
+    return classes;
   }
 }

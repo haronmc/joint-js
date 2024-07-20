@@ -3,12 +3,14 @@ package ru.smokingplaya.jointjs;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Source;
 import org.graalvm.polyglot.Value;
+import org.graalvm.polyglot.proxy.ProxyExecutable;
+
+import ru.smokingplaya.jointjs.functions.EventListener;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.function.Function;
 import java.util.logging.Logger;
 
 import static org.bukkit.Bukkit.getServer;
@@ -41,15 +43,8 @@ public class JavaScriptPlugin {
 
     Value bind = context.getBindings("js");
     bind.putMember("core", getServer());
-    bind.putMember("listenEvent", (Function<Value, Void>) event -> {
-      if (event.canExecute()) {
-        event.execute();
-      } else {
-        System.out.println("event data: " + event.toString());
-      }
 
-      return null;
-    });
+    new EventListener().register(bind);
 
     return context;
   }
@@ -59,10 +54,8 @@ public class JavaScriptPlugin {
       ArrayList<String> result = Utils.readCommand("bun build " + scriptEntryPoint.getAbsolutePath());
 
       execute(Source.newBuilder("js", Utils.toString(result), scriptEntryPoint.toPath().toString()).build());
-    } catch (IOException err) {
+    } catch (Exception err) {
       err.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
     }
   }
 
