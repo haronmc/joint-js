@@ -54,8 +54,12 @@ public class JavaScriptPlugin {
 
       execute(Source.newBuilder("js", Utils.toString(result), scriptEntryPoint.toPath().toString()).build());
     } catch (Exception err) {
-      err.printStackTrace();
+      logError(err);
     }
+  }
+
+  private void logError(Exception err) {
+    logger.severe(scriptBase.getPath() + ": " + err.getMessage());
   }
 
   private void execute(Source src) {
@@ -75,7 +79,8 @@ public class JavaScriptPlugin {
 
       execute(src);
     } catch (IOException err) {
-      logger.severe("Unable to execute \"" + scriptBase.getPath() + "\": " + err.toString());
+      logError(err);
+      // logger.severe("Unable to execute \"" + scriptBase.getPath() + "\": " + err.toString());
     }
   }
 
