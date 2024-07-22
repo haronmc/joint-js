@@ -1,3 +1,5 @@
+<img src="logo.png">
+
 # JointJS
 
 JointJS is a Minecraft spigot plugin, that adds JavaScript (GraalVM JS implementation) into Minecraft, allowing to code faster (because js is interpreted language).
