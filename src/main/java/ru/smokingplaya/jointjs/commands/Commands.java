@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.bukkit.command.PluginCommand;
 
 import ru.smokingplaya.jointjs.Callable;
-import ru.smokingplaya.jointjs.commands.utils.Executor;
-import ru.smokingplaya.jointjs.commands.utils.TabComplete;
+import ru.smokingplaya.jointjs.commands.util.Executor;
+import ru.smokingplaya.jointjs.commands.util.TabComplete;
 
 public class Commands {
   @SuppressWarnings({ "rawtypes", "unchecked" })

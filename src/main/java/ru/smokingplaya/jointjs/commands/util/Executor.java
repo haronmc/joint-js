@@ -1,4 +1,4 @@
-package ru.smokingplaya.jointjs.commands.utils;
+package ru.smokingplaya.jointjs.commands.util;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

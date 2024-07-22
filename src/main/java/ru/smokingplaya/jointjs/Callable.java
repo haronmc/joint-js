@@ -18,8 +18,6 @@ public abstract class Callable {
 
   public void onCall(Value[] event) {}
 
-  public void onRegister() {}
-
   public void register(Value binding) {
     binding.putMember(this.name, (ProxyExecutable) event -> {
       this.onCall(event);
@@ -28,4 +26,6 @@ public abstract class Callable {
 
     this.onRegister();
   }
+
+  public void onRegister() {}
 }

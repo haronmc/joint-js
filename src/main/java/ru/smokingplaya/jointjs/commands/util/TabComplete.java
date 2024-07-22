@@ -1,4 +1,4 @@
-package ru.smokingplaya.jointjs.commands.utils;
+package ru.smokingplaya.jointjs.commands.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
