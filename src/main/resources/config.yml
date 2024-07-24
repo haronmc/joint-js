@@ -1,0 +1,10 @@
+# Events in this array will be ignored in events.listen (including listenEvents)
+# Theoretically, it reduces the load.
+ignore-events: ["EntityAirChangeEvent"]
+# Creates an additional thread to check for file changes, hence increasing the load.
+# Useful during plugin development.
+hot-reload: false
+# Language strings
+lang:
+  dont-have-permissions: "You don't have permission to do that."
+  missing-argument: "You don't specify \"%s\" argument"

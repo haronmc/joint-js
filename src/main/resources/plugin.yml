@@ -5,5 +5,5 @@ api-version: '1.16'
 commands:
   joint:
     description: Controlling the plugin via commands
-    usage: /joint <command>
+    usage: /joint <subCommand>
     permission: jointjs.use.command

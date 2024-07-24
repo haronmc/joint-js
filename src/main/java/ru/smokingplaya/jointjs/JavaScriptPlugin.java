@@ -41,6 +41,7 @@ public class JavaScriptPlugin {
         .build();
 
     Value bind = context.getBindings("js");
+    bind.putMember("pluginFolder", scriptBase.getName());
     bind.putMember("core", getServer());
 
     Functions.Register(bind);
@@ -80,7 +81,6 @@ public class JavaScriptPlugin {
       execute(src);
     } catch (IOException err) {
       logError(err);
-      // logger.severe("Unable to execute \"" + scriptBase.getPath() + "\": " + err.toString());
     }
   }
 

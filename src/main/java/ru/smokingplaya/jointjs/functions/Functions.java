@@ -5,5 +5,6 @@ import org.graalvm.polyglot.Value;
 public class Functions {
   public static void Register(Value bind) {
     new EventListener().register(bind);
+    new Command().register(bind);
   }
 }

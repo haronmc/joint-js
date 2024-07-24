@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+
+import org.bukkit.command.CommandMap;
+import org.graalvm.polyglot.Value;
 
 public class Utils {
   // file utils
@@ -66,5 +70,31 @@ public class Utils {
     }
 
     return sb.toString();
+  }
+
+  // Value hacks
+
+  public static String getPluginFolder(Value ent) {
+    return ent.getContext()
+        .getBindings("js")
+        .getMember("pluginFolder")
+        .toString();
+  }
+
+  public static CommandMap getCommandMap()
+      throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    Field bukkitMap = Main.server.getClass().getDeclaredField("commandMap");
+    bukkitMap.setAccessible(true);
+    return (CommandMap) bukkitMap.get(Main.server);
+  }
+
+  public static Object getPrivateField(Object object, String field) throws SecurityException,
+      NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    Class<?> clazz = object.getClass();
+    Field objectField = clazz.getDeclaredField(field);
+    objectField.setAccessible(true);
+    Object result = objectField.get(object);
+    objectField.setAccessible(false);
+    return result;
   }
 }

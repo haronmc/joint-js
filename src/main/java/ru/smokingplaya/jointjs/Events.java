@@ -40,4 +40,8 @@ public class Events implements Listener {
 
     return classes;
   }
+
+  public interface EventCallback {
+    void callback(Event eventData);
+  }
 }
