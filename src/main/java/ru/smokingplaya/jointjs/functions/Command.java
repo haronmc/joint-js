@@ -157,6 +157,7 @@ public class Command extends Callable {
     }
   }
 
+  @SuppressWarnings("unused")
   public static class Argument {
     private String name;
     private boolean isOptional;

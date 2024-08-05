@@ -42,7 +42,7 @@ public class JavaScriptPlugin {
 
     Value bind = context.getBindings("js");
     bind.putMember("pluginFolder", scriptBase.getName());
-    bind.putMember("core", getServer());
+    bind.putMember("server", getServer());
 
     Functions.Register(bind);
 
